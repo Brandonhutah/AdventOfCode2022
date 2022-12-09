@@ -1,5 +1,5 @@
 fs = require("fs");
-fs.readFile('./input.txt', 'utf8', function (err, data) {
+fs.readFile('./day7/input.txt', 'utf8', function (err, data) {
     const directory = {};
 
     // build directory --------------------------------------------------------------------
