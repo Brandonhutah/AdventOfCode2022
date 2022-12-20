@@ -1,5 +1,5 @@
 fs = require("fs");
-fs.readFile('./input.txt', 'utf8', function (err, data) {
+fs.readFile('./day9/input.txt', 'utf8', function (err, data) {
     let moves = [];
     data.split(/\r\n/).forEach(inputLine => {
         moves.push(inputLine.split(" ").map(input => isNaN(+input) ? input : parseInt(input)));
@@ -68,10 +68,11 @@ fs.readFile('./input.txt', 'utf8', function (err, data) {
             }
 
             for (let i = 0; i < knots.length; i++) {
-                moveTail(knots[i], knots[i + 1]);
+                while (calculateDistance(knots[i], knots[i + 1]) >= 2) {
+                    moveTail(knots[i], knots[i + 1]);
+                    tailVisitedPositions["x" + knots[numKnots - 1].x + "y" + knots[numKnots - 1].y] = 1;
+                }
             }
-
-            tailVisitedPositions["x" + knots[numKnots - 1].x + "y" + knots[numKnots - 1].y] = 1;
         }
     });
 
@@ -86,20 +87,36 @@ fs.readFile('./input.txt', 'utf8', function (err, data) {
 
         if (head.x >= tail.x + 2) {
             tail.x = head.x - 1;
-            if (head.y !== tail.y)
-                tail.y = head.y;
+            if (head.y > tail.y)
+                tail.y++;
+            else if (head.y < tail.y)
+                tail.y--;
         } else if (head.x <= tail.x - 2) {
             tail.x = head.x + 1;
-            if (head.y !== tail.y)
-                tail.y = head.y;
+            if (head.y > tail.y)
+                tail.y++;
+            else if (head.y < tail.y)
+                tail.y--;
         } else if (head.y >= tail.y + 2) {
             tail.y = head.y - 1;
-            if (head.x !== tail.x)
-                tail.x = head.x;
+            if (head.x > tail.x)
+                tail.x++;
+            else if (head.x < tail.x)
+                tail.x--;
         } else if (head.y <= tail.y - 2) {
             tail.y = head.y + 1;
-            if (head.x !== tail.x)
-                tail.x = head.x;
+            if (head.x > tail.x)
+                tail.x++;
+            else if (head.x < tail.x)
+                tail.x--;
         }
+    }
+
+    function calculateDistance(head, tail) {
+        if (!tail) {
+            return 0;
+        }
+
+        return Math.floor(Math.sqrt(Math.pow((tail.x - head.x), 2) + Math.pow((tail.y - head.y), 2)));
     }
 });
