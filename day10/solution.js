@@ -46,8 +46,6 @@ fs.readFile('./day10/input.txt', 'utf8', function (err, data) {
     registerValue = 1;
     let currentRowOutput = "";
 
-    console.log(instructions.length);
-
     instructions.forEach(instruction => {
         let instructionCycles = 0;
 
